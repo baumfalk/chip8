@@ -2,7 +2,7 @@ import pygame, sys
 import pygame.locals
 from pygame import gfxdraw
 
-from disassembler import Dissassembler
+from CHIP8EMU import Chip8EMU
 
 pygame.init()
 BLACK = (0,0,0)
@@ -21,22 +21,26 @@ def drawScreen(surface, screenbits):
         for pixel in line:
             if pixel:
                 pygame.draw.rect(surface, WHITE, (x*10, y*10, 10, 10), 0)
+            else:
+                pygame.draw.rect(surface, BLACK, (x * 10, y * 10, 10, 10), 0)
             x += 1
         y += 1
 
     pygame.display.flip()
 
 
-d = Dissassembler('roms/test.dms', debug=True)
+d = Chip8EMU('roms/PONG.dms', debug=False)
 
 d.parseBytes(d.memory)
+
+print("=========================================")
 while True:
     d.runNextStep()
     drawScreen(windowSurface, d.screen)
     #pygame.draw.rect(windowSurface, WHITE, (0, 0, 10, 10), 0)
 
     for event in pygame.event.get():
-        print(event)
+        #print(event)
         # if event.key == pygame.K_p:
         #      #Do what you want to here
         #      pass
